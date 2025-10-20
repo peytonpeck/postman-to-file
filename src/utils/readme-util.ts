@@ -24,7 +24,7 @@ ${this.collection.info.description || 'Postman collection converted to file stru
 - \`requests/\` - API requests organized by folder
   - Each request has multiple files:
     - \`{name}.json\` - Request configuration
-    - \`{name}.script.json\` - Pre-request and test scripts
+    - \`{name}.event.json\` - Pre-request and test scripts
     - \`{name}.response-example.json\` - Example responses
     - \`{name}.variables.json\` - Request-level variables
 
@@ -200,7 +200,7 @@ AFTER:  001-GET-Users.json, 002-PUT-Update-User.json, 003-POST-Create-User.json,
 ### File Types
 
 - **Main request**: \`001-METHOD-Name.json\`
-- **Scripts**: \`001-METHOD-Name.script.json\`
+- **Events**: \`001-METHOD-Name.event.json\`
 - **Response examples**: \`001-METHOD-Name.response-example.json\`
 - **Variables**: \`001-METHOD-Name.variables.json\`
 - **Folder metadata**: \`metadata.json\`

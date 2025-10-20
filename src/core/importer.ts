@@ -100,12 +100,18 @@ export class PostmanImporter {
     const fileName = generateRequestFileName(requestItem.name, requestItem.request.method, index);
     const filePath = path.join(requestDir, fileName);
     
-    // Write main request file
-    await writeJsonFile(filePath, requestItem);
+    // Create a copy of the request item without separate file data for the main file
+    const requestForMainFile = { ...requestItem };
+    delete requestForMainFile.event;
+    delete requestForMainFile.response;
+    delete requestForMainFile.variable;
     
-    // Write script file if events exist
+    // Write main request file (without script, response, or variable data)
+    await writeJsonFile(filePath, requestForMainFile);
+    
+    // Write event file if events exist
     if (requestItem.event && requestItem.event.length > 0) {
-      await writeJsonFile(filePath.replace('.json', '.script.json'), requestItem.event);
+      await writeJsonFile(filePath.replace('.json', '.event.json'), requestItem.event);
     }
     
     // Write response examples if they exist

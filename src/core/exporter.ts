@@ -102,7 +102,7 @@ export class PostmanExporter {
         const folder = await this.processFolder(itemPath, item);
         const index = extractIndexFromFolderName(item);
         result.push({ item: folder, index });
-      } else if (item.endsWith('.json') && !item.includes('.script.') && !item.includes('.response-example.') && !item.includes('.variables.')) {
+      } else if (item.endsWith('.json') && !item.includes('.event.') && !item.includes('.response-example.') && !item.includes('.variables.')) {
         // This is a main request file (not script, response, or variables)
         const request = await this.processRequest(itemPath);
         const index = extractIndexFromFileName(item);
@@ -148,7 +148,7 @@ export class PostmanExporter {
         const folder = await this.processFolder(itemPath, item);
         const index = extractIndexFromFolderName(item);
         result.push({ item: folder, index });
-      } else if (item.endsWith('.json') && !item.includes('.script.') && !item.includes('.response-example.') && !item.includes('.variables.') && item !== 'metadata.json') {
+      } else if (item.endsWith('.json') && !item.includes('.event.') && !item.includes('.response-example.') && !item.includes('.variables.') && item !== 'metadata.json') {
         // This is a main request file (not script, response, variables, or metadata)
         const request = await this.processRequest(itemPath);
         const index = extractIndexFromFileName(item);
@@ -169,11 +169,11 @@ export class PostmanExporter {
     const basePath = requestPath.replace('.json', '');
     
     try {
-      const scriptPath = `${basePath}.script.json`;
-      const scripts = await readJsonFile(scriptPath);
-      request.event = scripts;
+      const eventPath = `${basePath}.event.json`;
+      const events = await readJsonFile(eventPath);
+      request.event = events;
     } catch {
-      // Script file doesn't exist
+      // Event file doesn't exist
     }
     
     try {

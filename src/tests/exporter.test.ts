@@ -85,7 +85,7 @@ describe('PostmanExporter', () => {
       }
     ];
     fs.writeFileSync(
-      path.join(testDir, 'requests', 'GET-Get-Users.script.json'),
+      path.join(testDir, 'requests', 'GET-Get-Users.event.json'),
       JSON.stringify(scripts, null, 2)
     );
 

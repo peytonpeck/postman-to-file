@@ -60,13 +60,13 @@ my_awesome_project % postman-to-file
 ├── 📄 README.md               # Documentation for AI
 └── 📁 requests/               # All your requests
     ├── 001-GET-Get-Users.json
-    ├── 001-GET-Get-Users.script.json
+    ├── 001-GET-Get-Users.event.json
     ├── 002-POST-Create-User.json
-    ├── 002-POST-Create-User.script.json
+    ├── 002-POST-Create-User.event.json
     └── 📁 003-Authentication/  # Folders too!
         ├── metadata.json
         ├── 001-POST-Login.json
-        └── 001-POST-Login.script.json
+        └── 001-POST-Login.event.json
 ```
 
 ## 📖 Detailed Usage
@@ -86,7 +86,7 @@ postman-to-file import my-api-collection.json ./my-api-structure/
 This creates a clean file structure where:
 
 - Each request becomes a separate `.json` file
-- Scripts are extracted to `.script.json` files
+- Scripts are extracted to `.event.json` files
 - Variables are organized in `variables.json`
 - Folders maintain their hierarchy
 - Everything is numbered for proper ordering

@@ -96,7 +96,7 @@ async function handleExport(dirPath: string, outputFile: string): Promise<void> 
   const collection = await exporter.export();
   
   // Write output file
-  fs.writeFileSync(outputFile, JSON.stringify(collection, null, 2));
+  fs.writeFileSync(outputFile, JSON.stringify(collection, null, '\t'));
   
   console.log("Collection exported successfully!");
   console.log(`Output file: ${outputFile}`);
