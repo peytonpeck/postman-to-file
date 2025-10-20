@@ -1,0 +1,30 @@
+# Source files
+src/
+
+# Test files
+test-scripts/
+**/*.test.ts
+**/*.spec.ts
+**/tests/
+
+# Development files
+tsconfig.json
+*.log
+*.tmp
+
+# Git
+.git/
+.gitignore
+
+# Node modules
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

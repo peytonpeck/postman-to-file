@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strictNullChecks": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
@@ -13,6 +13,11 @@
     "moduleResolution": "node",
     "esModuleInterop": true
   },
-  "include": ["src"],
-  "exclude": ["src/tests"]
+  "include": [
+    "src/cli.ts",
+    "src/core/**/*",
+    "src/types/**/*",
+    "src/utils/**/*"
+  ],
+  "exclude": ["src/tests/**/*", "**/*.test.ts", "**/*.spec.ts"]
 }

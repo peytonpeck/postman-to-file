@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./test-scripts/test-all.sh",
+    "test:integration": "./test-scripts/test-all.sh"
   },
   "keywords": ["postman", "api", "converter", "cli"],
   "author": "",
@@ -18,12 +19,11 @@
   "files": [
     "dist/**/*"
   ],
+  "dependencies": {
+    "newman": "^6.0.0"
+  },
   "devDependencies": {
     "@types/node": "^24.9.0",
-    "@types/jest": "^29.5.0",
-    "jest": "^29.5.0",
-    "ts-jest": "^29.1.0",
-    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
 }
