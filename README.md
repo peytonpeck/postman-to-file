@@ -6,6 +6,30 @@ Ever tried to get an AI assistant to help you with a massive Postman collection 
 
 **postman-to-file** solves this by breaking down your Postman collections into organized, readable file structures that AI tools (like Cursor, GitHub Copilot, or ChatGPT) can easily understand and help you edit.
 
+## Quick Start
+
+### Installation
+
+```bash
+npm install -g postman-to-file
+```
+
+### Usage
+
+```
+my_awesome_project % postman-to-file
+    Usage:
+    postman-to-file import <collection.json> <output-directory>
+    postman-to-file export <directory> <output.json>
+
+    Examples:
+    postman-to-file import my-collection.json ./my-api/
+    postman-to-file export ./my-api/ updated-collection.json
+
+    To run collections, use Newman directly:
+    newman run collection.json -e environment.json
+```
+
 ## 🤔 Why Do I Need This?
 
 ### The Problem
@@ -43,24 +67,6 @@ Ever tried to get an AI assistant to help you with a massive Postman collection 
         ├── metadata.json
         ├── 001-POST-Login.json
         └── 001-POST-Login.script.json
-```
-
-## Quick Start
-
-### Installation
-
-```bash
-npm install -g postman-to-file
-```
-
-### Usage
-
-```bash
-# Convert Postman collection to file structure
-postman-to-file import my-collection.json ./my-api/
-
-# Convert file structure back to Postman collection
-postman-to-file export ./my-api/ updated-collection.json
 ```
 
 ## 📖 Detailed Usage

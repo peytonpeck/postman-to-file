@@ -6,6 +6,7 @@ import { PostmanFolder } from '../types/PostmanFolder.js';
 import { PostmanRequestItem } from '../types/PostmanRequestItem.js';
 import { createDirectory, createRootDirectory, sanitizeFileName, writeJsonFile } from '../utils/file-system.js';
 import { generateFolderName, generateRequestFileName } from '../utils/naming.js';
+import { READMEUtil } from '../utils/readme-util.js';
 
 /**
  * Converts a Postman collection JSON to a structured file system
@@ -39,8 +40,11 @@ export class PostmanImporter {
       // Process items (requests and folders)
       await this.processItems(this.collection.item, 'requests');
       
-      // Write README
-      await this.writeReadme();
+      // Write documentation files
+      const readmeUtil = new READMEUtil(this.collection, this.outputDir);
+      await readmeUtil.writeReadme();
+      await readmeUtil.writeAiContext();
+      await readmeUtil.writeAiInstructions();
       
     } catch (error) {
       throw new Error(`Import failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -139,32 +143,4 @@ export class PostmanImporter {
     await this.processItems(folder.item, folderPath);
   }
 
-  private async writeReadme(): Promise<void> {
-    const readmeContent = `# ${this.collection.info.name}
-
-${this.collection.info.description || 'Postman collection converted to file structure'}
-
-## File Structure
-
-- \`collection.json\` - Collection metadata and configuration
-- \`variables.json\` - Collection-level variables
-- \`environments/\` - Environment configurations
-- \`requests/\` - API requests organized by folder
-  - Each request has multiple files:
-    - \`{name}.json\` - Request configuration
-    - \`{name}.script.json\` - Pre-request and test scripts
-    - \`{name}.response-example.json\` - Example responses
-    - \`{name}.variables.json\` - Request-level variables
-
-## Variable Syntax
-
-Variables use Postman's \`{{variable_name}}\` syntax. Collection variables are defined in \`variables.json\` at the root level.
-
-## Usage
-
-This structure is designed to be easily indexed by AI tools and maintained by development teams.
-`;
-
-    await fs.promises.writeFile(path.join(this.outputDir, 'README.md'), readmeContent);
-  }
 }
