@@ -1,15 +1,25 @@
 {
   "name": "postman-to-file",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Convert Postman JSON exports to folder and file structures",
+  "main": "dist/cli.js",
+  "bin": {
+    "postman-to-file": "./dist/cli.js"
+  },
+  "type": "module",
   "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["postman", "api", "converter", "cli"],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "files": [
+    "dist/**/*"
+  ],
   "devDependencies": {
+    "@types/node": "^24.9.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
