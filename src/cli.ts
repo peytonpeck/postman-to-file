@@ -15,7 +15,13 @@ async function main() {
     console.error("Usage:");
     console.error("  postman-to-file import <collection.json> <output-directory>");
     console.error("  postman-to-file export <directory> <output.json>");
-    console.error("  postman-to-file run <collection.json> [environment.json]");
+    console.error("");
+    console.error("Examples:");
+    console.error("  postman-to-file import my-collection.json ./my-api/");
+    console.error("  postman-to-file export ./my-api/ updated-collection.json");
+    console.error("");
+    console.error("To run collections, use Newman directly:");
+    console.error("  newman run collection.json -e environment.json");
     process.exit(1);
   }
   
@@ -32,10 +38,8 @@ async function main() {
         process.exit(1);
       }
       await handleExport(inputPath, outputPath);
-    } else if (command === "run") {
-      await handleRun(inputPath, outputPath);
     } else {
-      console.error("Invalid command. Use 'import', 'export', or 'run'");
+      console.error("Invalid command. Use 'import' or 'export'");
       process.exit(1);
     }
   } catch (error) {
@@ -98,55 +102,6 @@ async function handleExport(dirPath: string, outputFile: string): Promise<void> 
   console.log(`Output file: ${outputFile}`);
 }
 
-async function handleRun(collectionFile: string, environmentFile?: string): Promise<void> {
-  // Validate collection file exists
-  if (!fileExists(collectionFile)) {
-    throw new Error(`Collection file not found: ${collectionFile}`);
-  }
-  
-  // Validate environment file if provided
-  if (environmentFile && !fileExists(environmentFile)) {
-    throw new Error(`Environment file not found: ${environmentFile}`);
-  }
-  
-  console.log("🚀 Running Postman collection with Newman...");
-  
-  try {
-    // Import newman dynamically
-    const newman = await import('newman');
-    
-    // Configure newman options
-    const options: any = {
-      collection: collectionFile,
-      reporters: ['cli'],
-      color: 'on'
-    };
-    
-    // Add environment if provided
-    if (environmentFile) {
-      options.environment = environmentFile;
-    }
-    
-    // Run the collection
-    newman.run(options, (err: any) => {
-      if (err) {
-        console.error("❌ Newman run failed:", err.message);
-        process.exit(1);
-      } else {
-        console.log("✅ Collection run completed successfully!");
-      }
-    });
-    
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('Cannot find module')) {
-      console.error("❌ Newman not found. Installing Newman...");
-      console.log("Please run: npm install newman");
-      console.log("Then try again.");
-      process.exit(1);
-    } else {
-      throw error;
-    }
-  }
-}
+
 
 main();

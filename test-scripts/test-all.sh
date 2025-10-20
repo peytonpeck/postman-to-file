@@ -38,14 +38,6 @@ if [ $? -ne 0 ]; then
 fi
 echo ""
 
-echo "Running Run Tests..."
-bash test-scripts/test-run.sh
-
-if [ $? -ne 0 ]; then
-    echo "Run tests failed"
-    exit 1
-fi
-echo ""
 
 echo "🚀 Running Round-trip Tests..."
 bash test-scripts/test-roundtrip.sh
@@ -58,14 +50,13 @@ echo ""
 
 # Clean up test outputs
 echo "🧹 Cleaning up test outputs..."
-rm -rf test-output-* test-exported-*.json test-roundtrip-* test-run-*.json 2>/dev/null
+rm -rf test-output-* test-exported-*.json test-roundtrip-* 2>/dev/null
 
 echo ""
 echo "🎉 All tests passed successfully!"
 echo "================================="
 echo "✅ Import functionality working"
 echo "✅ Export functionality working"
-echo "✅ Run functionality working"
 echo "✅ Round-trip functionality working"
 echo ""
 echo "🚀 postman-to-file is ready for use!"

@@ -1,7 +1,7 @@
 {
   "name": "postman-to-file",
   "version": "1.0.0",
-  "description": "Convert Postman JSON exports to folder and file structures",
+  "description": "Convert Postman collections to AI-friendly file structures and back",
   "main": "dist/cli.js",
   "bin": {
     "postman-to-file": "./dist/cli.js"
@@ -13,15 +13,13 @@
     "test": "./test-scripts/test-all.sh",
     "test:integration": "./test-scripts/test-all.sh"
   },
-  "keywords": ["postman", "api", "converter", "cli"],
+  "keywords": ["postman", "api", "converter", "cli", "ai", "file-structure", "collection"],
   "author": "",
   "license": "ISC",
   "files": [
     "dist/**/*"
   ],
-  "dependencies": {
-    "newman": "^6.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^24.9.0",
     "typescript": "^5.9.3"
