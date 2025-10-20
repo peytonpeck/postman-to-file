@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && chmod +x dist/cli.js",
     "prepublishOnly": "npm run build",
     "test": "./test-scripts/test-all.sh",
     "test:integration": "./test-scripts/test-all.sh"
