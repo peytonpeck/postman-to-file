@@ -1,0 +1,131 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run test suite
+        run: npm test
+
+      - name: Test CLI functionality
+        run: |
+          echo "🧪 Testing CLI functionality..."
+
+          # Test help command
+          ./dist/cli.js || echo "CLI executed (expected to show usage)"
+
+          # Test import with simple collection
+          echo "📥 Testing import..."
+          ./dist/cli.js import test-scripts/test-data/simple-collection.json test-cli-import
+
+          # Test export
+          echo "📤 Testing export..."
+          ./dist/cli.js export test-cli-import test-cli-export.json
+
+          # Verify JSON is valid
+          echo "✅ Verifying exported JSON..."
+          node -e "JSON.parse(require('fs').readFileSync('test-cli-export.json', 'utf8')); console.log('✅ Exported JSON is valid')"
+
+          # Test round-trip
+          echo "🔄 Testing round-trip..."
+          ./dist/cli.js import test-cli-export.json test-roundtrip-import
+          ./dist/cli.js export test-roundtrip-import test-roundtrip-export.json
+
+          echo "🎉 All CLI tests passed!"
+
+      - name: Verify file structure
+        run: |
+          echo "📁 Verifying generated file structure..."
+
+          # Check that import creates expected files
+          test -f test-cli-import/collection.json || (echo "❌ Missing collection.json" && exit 1)
+          test -f test-cli-import/variables.json || (echo "❌ Missing variables.json" && exit 1)
+          test -f test-cli-import/README.md || (echo "❌ Missing README.md" && exit 1)
+          test -f test-cli-import/ai-context.json || (echo "❌ Missing ai-context.json" && exit 1)
+          test -f test-cli-import/ai-instructions.md || (echo "❌ Missing ai-instructions.md" && exit 1)
+          test -d test-cli-import/requests || (echo "❌ Missing requests directory" && exit 1)
+
+          # Check that requests have proper structure
+          ls test-cli-import/requests/*.json > /dev/null || (echo "❌ No request files found" && exit 1)
+          ls test-cli-import/requests/*.event.json > /dev/null || (echo "❌ No event files found" && exit 1)
+
+          echo "✅ File structure verification passed!"
+
+      - name: Test error handling
+        run: |
+          echo "🚨 Testing error handling..."
+
+          # Test with non-existent file
+          ./dist/cli.js import non-existent.json test-error 2>&1 | grep -q "File not found" || (echo "❌ Should fail with non-existent file" && exit 1)
+
+          # Test with existing output directory
+          ./dist/cli.js import test-scripts/test-data/simple-collection.json test-cli-import 2>&1 | grep -q "Directory already exists" || (echo "❌ Should fail with existing directory" && exit 1)
+
+          # Test with existing output file
+          ./dist/cli.js export test-cli-import test-cli-export.json 2>&1 | grep -q "File already exists" || (echo "❌ Should fail with existing file" && exit 1)
+
+          echo "✅ Error handling tests passed!"
+
+      - name: Cleanup
+        if: always()
+        run: |
+          echo "🧹 Cleaning up test files..."
+          rm -rf test-cli-import test-cli-export.json test-roundtrip-import test-roundtrip-export.json test-output-* test-exported-*.json test-roundtrip-*
+          echo "✅ Cleanup completed!"
+
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check TypeScript compilation
+        run: |
+          echo "🔍 Checking TypeScript compilation..."
+          npx tsc --noEmit
+          echo "✅ TypeScript compilation successful!"
+
+      - name: Verify build output
+        run: |
+          echo "🔨 Building project..."
+          npm run build
+
+          echo "📁 Verifying build output..."
+          test -f dist/cli.js || (echo "❌ Missing dist/cli.js" && exit 1)
+          test -x dist/cli.js || (echo "❌ dist/cli.js not executable" && exit 1)
+
+          echo "✅ Build verification passed!"

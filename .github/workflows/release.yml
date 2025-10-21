@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build project
+        run: npm run build
+
+      - name: Verify CLI
+        run: |
+          echo "🧪 Testing CLI before release..."
+          ./dist/cli.js || echo "CLI help displayed (expected)"
+
+          # Test basic functionality
+          ./dist/cli.js import test-scripts/test-data/simple-collection.json test-release-import
+          ./dist/cli.js export test-release-import test-release-export.json
+
+          # Verify JSON validity
+          node -e "JSON.parse(require('fs').readFileSync('test-release-export.json', 'utf8')); console.log('✅ Release build verified')"
+
+          # Cleanup
+          rm -rf test-release-import test-release-export.json
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

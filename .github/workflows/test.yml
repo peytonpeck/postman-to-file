@@ -1,0 +1,59 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run test suite
+        run: npm test
+
+      - name: Verify CLI works
+        run: |
+          # Test that the CLI is executable and shows help
+          ./dist/cli.js --help || echo "CLI help test completed"
+
+      - name: Test import functionality
+        run: |
+          # Test import with a simple collection
+          ./dist/cli.js import test-scripts/test-data/simple-collection.json test-ci-import
+
+      - name: Test export functionality
+        run: |
+          # Test export from the imported collection
+          ./dist/cli.js export test-ci-import test-ci-export.json
+
+      - name: Verify exported JSON
+        run: |
+          # Verify the exported JSON is valid
+          node -e "JSON.parse(require('fs').readFileSync('test-ci-export.json', 'utf8')); console.log('✅ Exported JSON is valid')"
+
+      - name: Cleanup test files
+        if: always()
+        run: |
+          rm -rf test-ci-import test-ci-export.json test-output-* test-exported-*.json test-roundtrip-*
