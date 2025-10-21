@@ -1,6 +1,6 @@
 {
   "name": "postman-to-file",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert Postman collections to AI-friendly file structures and back",
   "main": "dist/cli.js",
   "bin": {
