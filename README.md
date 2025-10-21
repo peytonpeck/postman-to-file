@@ -34,24 +34,24 @@ my_awesome_project % postman-to-file
 
 ### The Problem
 
-- **Massive JSON files**: Postman exports are huge, monolithic JSON files
+Postman exports are huge, monolithic JSON files. This leads to the following issues:
+
 - **AI confusion**: AI tools struggle with complex nested structures
-- **Hard to edit**: Finding and modifying specific requests is a nightmare
 - **No version control**: Hard to track changes in a single JSON file
 - **Git conflicts**: Multiple developers editing the same JSON = merge nightmare
 - **Collaboration chaos**: "Who changed what?" becomes impossible to track
 
 ### The Solution
 
-- **Organized structure**: Each request becomes its own file
+- **Organized structure**: Each request becomes its own set of files
 - **AI-friendly**: Clean, readable files that AI can easily understand
 - **Easy editing**: Find and modify requests quickly
 - **Version control**: Track changes to individual requests
-- **Team collaboration**: Multiple developers can work on different requests simultaneously
 - **Git-friendly**: No more merge conflicts on massive JSON files
 - **Round-trip safe**: Convert back to Postman format anytime
+- **Pipeline Support**: Export your file structure using the `postman-to-file` CLI and run your tests with Newman
 
-## 🎯 What Does It Do?
+## What Does It Do?
 
 ```
 📁 Your Postman Collection
@@ -69,7 +69,7 @@ my_awesome_project % postman-to-file
         └── 001-POST-Login.event.json
 ```
 
-## 📖 Detailed Usage
+## Detailed Usage
 
 ### Import (JSON → File Structure)
 
