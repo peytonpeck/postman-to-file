@@ -10,18 +10,27 @@
   "scripts": {
     "build": "tsc && chmod +x dist/cli.js",
     "prepublishOnly": "npm run build",
-    "test": "./test-scripts/test-all.sh",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "vitest run",
     "test:integration": "./test-scripts/test-all.sh"
   },
-  "keywords": ["postman", "api", "converter", "cli", "ai", "file-structure", "collection"],
+  "keywords": [
+    "postman",
+    "api",
+    "converter",
+    "cli",
+    "ai",
+    "file-structure",
+    "collection"
+  ],
   "author": "",
   "license": "ISC",
   "files": [
     "dist/**/*"
   ],
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^24.9.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }

@@ -1,7 +1,11 @@
-// Test file - Jest imports will be added when Jest is configured
 import fs from 'fs';
 import path from 'path';
-import { PostmanExporter } from '../core/exporter';
+import { fileURLToPath } from 'url';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { PostmanExporter } from '../core/exporter.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 describe('PostmanExporter', () => {
   const testDir = path.join(__dirname, 'test-export');

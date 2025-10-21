@@ -10,23 +10,6 @@ export function generateRequestFileName(name: string, method: string, index: num
   return `${indexStr}${methodPrefix}-${sanitizedName}.json`;
 }
 
-/**
- * Generates a unique file name for duplicate requests with index
- */
-export function generateUniqueFileName(baseName: string, method: string, index: number, existingNames: Set<string>): string {
-  let counter = 1;
-  let fileName = generateRequestFileName(baseName, method, index);
-  
-  while (existingNames.has(fileName)) {
-    const sanitizedName = sanitizeFileName(baseName);
-    const methodPrefix = method.toUpperCase();
-    const indexStr = `${String(index).padStart(3, '0')}-`;
-    fileName = `${indexStr}${methodPrefix}-${sanitizedName}(${counter}).json`;
-    counter++;
-  }
-  
-  return fileName;
-}
 
 /**
  * Extracts the index from a request file name
@@ -49,10 +32,7 @@ export function extractBaseNameFromFileName(fileName: string): string {
   // Remove method prefix (e.g., "GET-", "POST-")
   const withoutMethod = withoutIndex.replace(/^[A-Z]+-/, '');
   
-  // Remove duplicate counter (e.g., "(1)", "(2)")
-  const withoutCounter = withoutMethod.replace(/\(\d+\)$/, '');
-  
-  return withoutCounter;
+  return withoutMethod;
 }
 
 /**

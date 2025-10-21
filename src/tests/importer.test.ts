@@ -1,8 +1,12 @@
-// Test file - Jest imports will be added when Jest is configured
 import fs from 'fs';
 import path from 'path';
-import { PostmanImporter } from '../core/importer';
-import { PostmanCollection } from '../types/PostmanCollection';
+import { fileURLToPath } from 'url';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { PostmanImporter } from '../core/importer.js';
+import { PostmanCollection } from '../types/PostmanCollection.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 describe('PostmanImporter', () => {
   const testDir = path.join(__dirname, 'test-output');
@@ -50,7 +54,7 @@ describe('PostmanImporter', () => {
     const importer = new PostmanImporter(mockCollection, testDir);
     await importer.import();
 
-    const requestFile = path.join(testDir, 'requests', 'GET-Get-Users.json');
+    const requestFile = path.join(testDir, 'requests', '001-GET-Get-Users.json');
     expect(fs.existsSync(requestFile)).toBe(true);
 
     const requestContent = JSON.parse(fs.readFileSync(requestFile, 'utf8'));
