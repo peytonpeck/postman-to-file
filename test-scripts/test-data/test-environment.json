@@ -1,0 +1,21 @@
+{
+  "id": "test-env-123",
+  "name": "Test Environment",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://jsonplaceholder.typicode.com",
+      "enabled": true
+    },
+    {
+      "key": "apiKey",
+      "value": "test-api-key-123",
+      "enabled": true
+    },
+    {
+      "key": "timeout",
+      "value": "5000",
+      "enabled": true
+    }
+  ]
+}
